@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNI-CONNECT - Platform Interaksi Mahasiswa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0C2B4E;
+            --primary-light: #1a4673;
+            --primary-lighter: #3d6a9e;
+            --accent: #4a9eff;
+            --light: #f8f9fa;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light);
+            color: var(--primary);
+            overflow-x: hidden;
+        }
+        
+        .brand-title {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+        }
+        
+        .page-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Welcome & Profile Setup */
+        .welcome-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-lighter) 100%);
+            color: white;
+        }
+        
+        .profile-setup {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: var(--light);
+        }
+        
+        /* Navbar */
+        .navbar-custom {
+            background: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-family: 'Roboto Slab', serif;
+            color: white !important;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            transition: all 0.3s;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            margin: 0 4px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Buttons */
+        .btn-primary-custom {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary-custom:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(12, 43, 78, 0.3);
+        }
+        
+        .btn-outline-custom {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-custom:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Cards */
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            background: white;
+            overflow: hidden;
+        }
+        
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            cursor: pointer;
+            background: white;
+            border-radius: 12px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 158, 255, 0.2);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        /* Profile & Badges */
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+        }
+        
+        .level-badge {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-lighter) 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .skill-badge {
+            background: var(--light);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin: 4px;
+            display: inline-block;
+            border: 1px solid var(--accent);
+        }
+        
+        .achievement-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 30px;
+            margin: 10px;
+            display: inline-block;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        /* Study Room */
+        .room-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .room-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
+        }
+        
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Roboto Slab', serif;
+        }
+        
+        /* Feed */
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .post-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+        
+        /* Project */
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .project-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            transform: translateX(5px);
+        }
+        
+        .task-item {
+            background: var(--light);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+            border-left-color: #28a745;
+        }
+        
+        /* Progress */
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary-lighter) 100%);
+        }
+        
+        /* Filter Buttons */
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Modal */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        /* Form */
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(74, 158, 255, 0.25);
+        }
+        
+        /* Stats */
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .stat-card h3 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Roboto Slab', serif;
+        }
+        
+        /* Skill Tree */
+        .skill-tree {
+            background: linear-gradient(135deg, var(--light) 0%, #ffffff 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        .skill-node {
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            margin: 10px;
+            display: inline-block;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(74, 158, 255, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .skill-node:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 2.5rem;
+            }
+            
+            .stat-card h3 {
+                font-size: 2rem;
+            }
+            
+            .feature-card i {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen" class="page-section active">
+        <div class="welcome-screen">
+            <div class="text-center">
+                <h1 class="brand-title display-3 mb-4">
+                    <i class="fas fa-graduation-cap"></i> UNI-CONNECT
+                </h1>
+                <p class="lead mb-5">Platform Interaksi Lintas Kampus untuk Mahasiswa Indonesia</p>
+                <button class="btn btn-primary-custom btn-lg" onclick="showProfileSetup()">
+                    <i class="fas fa-arrow-right"></i> Mulai Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Setup -->
+    <div id="profileSetup" class="page-section">
+        <div class="profile-setup">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card-custom p-4">
+                            <h2 class="brand-title text-center mb-4">
+                                <i class="fas fa-user-edit"></i> Lengkapi Profil Anda
+                            </h2>
+                            <form id="profileForm">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-user"></i> Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="userName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-id-card"></i> NIM</label>
+                                    <input type="text" class="form-control" id="userNIM" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-calendar"></i> Semester</label>
+                                    <select class="form-select" id="userSemester" required>
+                                        <option value="">Pilih Semester</option>
+                                        <option value="1">Semester 1</option>
+                                        <option value="2">Semester 2</option>
+                                        <option value="3">Semester 3</option>
+                                        <option value="4">Semester 4</option>
+                                        <option value="5">Semester 5</option>
+                                        <option value="6">Semester 6</option>
+                                        <option value="7">Semester 7</option>
+                                        <option value="8">Semester 8</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-book"></i> Jurusan/Program Studi</label>
+                                    <input type="text" class="form-control" id="userMajor" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="fas fa-university"></i> Universitas</label>
+                                    <input type="text" class="form-control" id="userUniversity" required>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary-custom btn-lg">
+                                        <i class="fas fa-check"></i> Simpan & Lanjutkan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page-section">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="#" onclick="showDashboard()">
+                    <i class="fas fa-users"></i> UNI-CONNECT
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showDashboard()">
+                                <i class="fas fa-home"></i> Beranda
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showMatching()">
+                                <i class="fas fa-user-friends"></i> Matching
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showStudyRoom()">
+                                <i class="fas fa-book-reader"></i> Study Room
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showProjects()">
+                                <i class="fas fa-project-diagram"></i> Projects
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showFeed()">
+                                <i class="fas fa-rss"></i> Feed
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showProfile()">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="content-section active">
+            <div class="container mt-5">
+                <div class="text-center mb-5">
+                    <h1 class="brand-title">Selamat Datang, <span id="displayName"></span>! 👋</h1>
+                    <p class="lead">Pilih fitur untuk memulai</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-card" onclick="showMatching()">
+                            <i class="fas fa-users-cog"></i>
+                            <h4 class="brand-title">Matching</h4>
+                            <p>Temukan mahasiswa dari kampus lain dengan minat dan skill yang sesuai</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card" onclick="showStudyRoom()">
+                            <i class="fas fa-door-open"></i>
+                            <h4 class="brand-title">Study Room</h4>
+                            <p>Ruang belajar bersama dengan mode fokus atau diskusi</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card" onclick="showProjects()">
+                            <i class="fas fa-tasks"></i>
+                            <h4 class="brand-title">Project Collaboration</h4>
+                            <p>Kolaborasi proyek dengan manajemen task dan timeline</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card" onclick="showFeed()">
+                            <i class="fas fa-comments"></i>
+                            <h4 class="brand-title">Intercampus Feed</h4>
+                            <p>Tips, info lomba, review, dan diskusi antar mahasiswa</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card" onclick="showProfile()">
+                            <i class="fas fa-id-card"></i>
+                            <h4 class="brand-title">Student Profile</h4>
+                            <p>Profil akademik dengan skill tree dan badge pencapaian</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3><i class="fas fa-star"></i></h3>
+                            <h4 class="brand-title">Level <span id="userLevel">1</span></h4>
+                            <p class="text-muted">Progress Anda</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 g-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3>1,248</h3>
+                            <p class="text-muted">Mahasiswa Aktif</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3>45</h3>
+                            <p class="text-muted">Universitas</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3>327</h3>
+                            <p class="text-muted">Proyek Aktif</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3>89</h3>
+                            <p class="text-muted">Study Rooms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matching Section -->
+        <div id="matching" class="content-section">
+            <div class="container mt-5">
+                <h2 class="brand-title mb-4"><i class="fas fa-users-cog"></i> Sistem Pencocokan Mahasiswa</h2>
+                
+                <div class="card-custom p-4 mb-4">
+                    <h5><i class="fas fa-filter"></i> Preferensi Pencarian</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Minat Akademik</label>
+                            <input type="text" class="form-control" placeholder="Web Development, AI, Data Science">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Skill</label>
+                            <input type="text" class="form-control" placeholder="JavaScript, Python, UI/UX">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Tujuan</label>
+                            <select class="form-select">
+                                <option>Belajar Bareng</option>
+                                <option>Partner Proyek</option>
+                                <option>Teman Sharing</option>
+                                <option>Magang</option>
+                                <option>Komunitas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hobi</label>
+                            <input type="text" class="form-control" placeholder="Fotografi, Gaming, Traveling">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary-custom" onclick="findMatches()">
+                        <i class="fas fa-search"></i> Find Match
+                    </button>
+                </div>
+
+                <div id="matchResults" style="display: none;">
+                    <h5 class="mb-4">Rekomendasi untuk Anda</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card-custom p-4">
+                                <div class="d-flex align-items-start mb-3">
+                                    <img src="https://ui-avatars.com/api/?name=Sarah+Azzahra&background=4a9eff&color=fff&size=80" class="profile-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <h5>Sarah Azzahra</h5>
+                                        <p class="text-muted mb-2"><i class="fas fa-university"></i> Teknik Informatika - UGM</p>
+                                        <span class="skill-badge">Semester 5</span>
+                                        <span class="level-badge"><i class="fas fa-star"></i> Level 12</span>
+                                    </div>
+                                </div>
+                                <p class="mb-3"><strong>Skills:</strong></p>
+                                <span class="skill-badge">React</span>
+                                <span class="skill-badge">Node.js</span>
+                                <span class="skill-badge">UI/UX</span>
+                                <p class="mt-3 mb-2"><strong>Kecocokan: 92%</strong></p>
+                                <div class="progress mb-3" style="height: 20px;">
+                                    <div class="progress-bar progress-bar-custom" style="width: 92%">92%</div>
+                                </div>
+                                <button class="btn btn-primary-custom btn-sm me-2" onclick="viewProfile('Sarah')">
+                                    <i class="fas fa-eye"></i> Lihat Profile
+                                </button>
+                                <button class="btn btn-outline-custom btn-sm me-2" onclick="sendMessage('Sarah')">
+                                    <i class="fas fa-comment"></i> Kirim Pesan
+                                </button>
+                                <button class="btn btn-outline-custom btn-sm" onclick="inviteToRoom('Sarah')">
+                                    <i class="fas fa-door-open"></i> Undang ke Room
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card-custom p-4">
+                                <div class="d-flex align-items-start mb-3">
+                                    <img src="https://ui-avatars.com/api/?name=Andi+Permana&background=4a9eff&color=fff&size=80" class="profile-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <h5>Andi Permana</h5>
+                                        <p class="text-muted mb-2"><i class="fas fa-university"></i> Sistem Informasi - ITB</p>
+                                        <span class="skill-badge">Semester 6</span>
+                                        <span class="level-badge"><i class="fas fa-star"></i> Level 15</span>
+                                    </div>
+                                </div>
+                                <p class="mb-3"><strong>Skills:</strong></p>
+                                <span class="skill-badge">Python</span>
+                                <span class="skill-badge">Machine Learning</span>
+                                <span class="skill-badge">Data Analysis</span>
+                                <p class="mt-3 mb-2"><strong>Kecocokan: 88%</strong></p>
+                                <div class="progress mb-3" style="height: 20px;">
+                                    <div class="progress-bar progress-bar-custom" style="width: 88%">88%</div>
+                                </div>
+                                <button class="btn btn-primary-custom btn-sm me-2" onclick="viewProfile('Andi')">
+                                    <i class="fas fa-eye"></i> Lihat Profile
+                                </button>
+                                <button class="btn btn-outline-custom btn-sm me-2" onclick="sendMessage('Andi')">
+                                    <i class="fas fa-comment"></i> Kirim Pesan
+                                </button>
+                                <button class="btn btn-outline-custom btn-sm" onclick="findMore()">
+                                    <i class="fas fa-redo"></i> Cari Lagi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-outline-custom" onclick="showDashboard()">
+                            <i class="fas fa-home"></i> Kembali ke Beranda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study Room Section -->
+        <div id="studyroom" class="content-section">
+            <div class="container mt-5">
+                <h2 class="brand-title mb-4"><i class="fas fa-door-open"></i> Study Room</h2>
+                
+                <div id="roomSelection">
+                    <h5 class="mb-3">Pilih Tipe Ruangan</h5>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="room-card" onclick="selectRoomType('public')">
+                                <h4><i class="fas fa-globe"></i> Public Room</h4>
+                                <p class="mb-0">Bergabung dengan mahasiswa dari berbagai kampus</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-card" onclick="selectRoomType('private')">
+                                <h4><i class="fas fa-lock"></i> Private Room</h4>
+                                <p class="mb-0">Buat ruangan khusus untuk kelompok Anda</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modeSelection" style="display: none;">
+                    <h5 class="mb-3">Pilih Mode Belajar</h5>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="room-card" onclick="selectMode('focus')">
+                                <h4><i class="fas fa-brain"></i> Deep Focus</h4>
+                                <p class="mb-2">Kamera Off | Timer Fokus | Minimal Chat</p>
+                                <small>Cocok untuk belajar mandiri dengan suasana produktif</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="room-card" onclick="selectMode('discussion')">
+                                <h4><i class="fas fa-comments"></i> Open Discussion</h4>
+                                <p class="mb-2">Kamera & Mic ON | Share Screen | Raise Hand</p>
+                                <small>Cocok untuk diskusi tugas dan brainstorming</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="activeStudyRoom" style="display: none;">
+                    <div class="card-custom p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="brand-title"><i class="fas fa-door-open"></i> <span id="currentRoomName"></span></h4>
+                            <button class="btn btn-outline-custom" onclick="leaveStudyRoom()">
+                                <i class="fas fa-sign-out-alt"></i> Keluar
+                            </button>
+                        </div>
+
+                        <div class="timer-display" id="timerDisplay">25:00</div>
+
+                        <div class="text-center mb-4">
+                            <button class="btn btn-primary-custom me-2" id="startBtn" onclick="startTimer()">
+                                <i class="fas fa-play"></i> Mulai
+                            </button>
+                            <button class="btn btn-outline-custom me-2" id="pauseBtn" onclick="pauseTimer()">
+                                <i class="fas fa-pause"></i> Pause
+                            </button>
+                            <button class="btn btn-outline-custom" onclick="resetTimer()">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-users"></i> Peserta (5)</h6>
+                                <div class="card-custom p-3 mb-3" style="max-height: 250px; overflow-y: auto;">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-user-circle fa-2x text-primary me-3"></i>
+                                        <span>Kamu</span>
+                                        <span class="ms-auto badge bg-success">Fokus</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-user-circle fa-2x text-secondary me-3"></i>
+                                        <span>Ahmad - UI</span>
+                                        <span class="ms-auto badge bg-success">Fokus</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="fas fa-user-circle fa-2x text-secondary me-3"></i>
+                                        <span>Siti - ITB</span>
+                                        <span class="ms-auto badge bg-warning">Break</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-circle fa-2x text-secondary me-3"></i>
+                                        <span>Budi - UGM</span>
+                                        <span class="ms-auto badge bg-success">Fokus</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="fas fa-comment"></i> Chat</h6>
+                                <div class="card-custom p-3 mb-3" style="height: 200px; overflow-y: auto; background: var(--light);" id="chatBox">
+                                    <p class="small mb-2"><strong>Ahmad:</strong> Semangat belajarnya guys! 💪</p>
+                                    <p class="small mb-2"><strong>Siti:</strong> Fokus 25 menit yuk</p>
+                                </div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="chatInput" placeholder="Ketik pesan...">
+                                    <button class="btn btn-primary-custom" onclick="sendChatMessage()">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button class="btn btn-outline-custom btn-sm me-2">
+                                <i class="fas fa-desktop"></i> Share Screen
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="fas fa-file"></i> Share File
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary-custom" onclick="completeSession()">
+                            <i class="fas fa-check-circle"></i> Selesai & Dapat Badge
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div id="projects" class="content-section">
+            <div class="container mt-5">
+                <h2 class="brand-title mb-4"><i class="fas fa-project-diagram"></i> Project Collaboration</h2>
+
+                <div class="mb-4">
+                    <button class="btn btn-primary-custom me-2" onclick="showCreateProject()">
+                        <i class="fas fa-plus"></i> Buat Proyek Baru
+                    </button>
+                    <button class="btn btn-outline-custom" onclick="showAvailableProjects()">
+                        <i class="fas fa-search"></i> Cari Proyek Tersedia
+                    </button>
+                </div>
+
+                <div id="createProjectForm" style="display: none;" class="card-custom p-4 mb-4">
+                    <h5><i class="fas fa-plus-circle"></i> Detail Proyek Baru</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nama Proyek</label>
+                            <input type="text" class="form-control" id="projectName">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select class="form-select" id="projectCategory">
+                                <option>Startup</option>
+                                <option>Academic</option>
+                                <option>Research</option>
+                                <option>Competition</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Deskripsi</label>
+                            <textarea class="form-control" rows="3" id="projectDesc"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Skill yang Dibutuhkan</label>
+                            <input type="text" class="form-control" id="projectSkills" placeholder="React, Node.js, UI/UX">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Timeline</label>
+                            <input type="text" class="form-control" id="projectTimeline" placeholder="3 bulan">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary-custom" onclick="createProject()">
+                        <i class="fas fa-check"></i> Buat & Auto-Match Skill
+                    </button>
+                    <button class="btn btn-outline-custom ms-2" onclick="cancelCreateProject()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+
+                <div id="projectList">
+                    <h5 class="mb-4">Proyek Anda</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="project-card">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5><i class="fas fa-laptop-code"></i> Website E-Commerce</h5>
+                                        <p class="text-muted mb-0">Startup Project</p>
+                                    </div>
+                                    <span class="badge bg-warning">In Progress</span>
+                                </div>
+                                <p class="mb-3">Platform e-commerce untuk UMKM dengan payment gateway</p>
+                                <div class="mb-3">
+                                    <strong>Tim:</strong>
+                                    <div class="d-flex mt-2">
+                                        <div class="post-avatar" style="width: 35px; height: 35px; font-size: 0.8rem;">SA</div>
+                                        <div class="post-avatar ms-2" style="width: 35px; height: 35px; font-size: 0.8rem;">AP</div>
+                                        <div class="post-avatar ms-2" style="width: 35px; height: 35px; font-size: 0.8rem;">RH</div>
+                                        <span class="ms-2 small">+2</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Progress: 65%</strong>
+                                    <div class="progress mt-2" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-custom" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary-custom btn-sm" onclick="openProjectDashboard('E-Commerce')">
+                                    <i class="fas fa-folder-open"></i> Buka Dashboard
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="project-card">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h5><i class="fas fa-mobile-alt"></i> Aplikasi Pembelajaran</h5>
+                                        <p class="text-muted mb-0">Academic Project</p>
+                                    </div>
+                                    <span class="badge bg-info">Planning</span>
+                                </div>
+                                <p class="mb-3">Mobile app pembelajaran dengan gamifikasi</p>
+                                <div class="mb-3">
+                                    <strong>Tim:</strong>
+                                    <div class="d-flex mt-2">
+                                        <div class="post-avatar" style="width: 35px; height: 35px; font-size: 0.8rem;">DS</div>
+                                        <span class="ms-2 small">Butuh 3 orang</span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Progress: 15%</strong>
+                                    <div class="progress mt-2" style="height: 20px;">
+                                        <div class="progress-bar progress-bar-custom" style="width: 15%"></div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline-custom btn-sm" onclick="joinProject('Pembelajaran')">
+                                    <i class="fas fa-user-plus"></i> Join Proyek
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="projectDashboard" style="display: none;" class="card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="brand-title"><i class="fas fa-tasks"></i> Dashboard Proyek</h4>
+                        <button class="btn btn-outline-custom" onclick="closeProjectDashboard()">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+
+                    <ul class="nav nav-tabs mb-4">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#tabTasks">Tasks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#tabFiles">Files</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#tabTimeline">Timeline</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="tabTasks" class="tab-pane fade show active">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5>Task Management</h5>
+                                <button class="btn btn-primary-custom btn-sm" onclick="addNewTask()">
+                                    <i class="fas fa-plus"></i> Tambah Task
+                                </button>
+                            </div>
+                            <div class="task-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6>Design Landing Page</h6>
+                                        <p class="mb-1 small text-muted">Assigned: Sarah | Deadline: 25 Nov</p>
+                                        <span class="badge bg-danger">High Priority</span>
+                                    </div>
+                                    <button class="btn btn-success btn-sm" onclick="completeTask(this)">
+                                        <i class="fas fa-check"></i> Selesai
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="task-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6>Setup Database</h6>
+                                        <p class="mb-1 small text-muted">Assigned: Andi | Deadline: 27 Nov</p>
+                                        <span class="badge bg-warning">Medium</span>
+                                    </div>
+                                    <button class="btn btn-success btn-sm" onclick="completeTask(this)">
+                                        <i class="fas fa-check"></i> Selesai
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabFiles" class="tab-pane fade">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5>File Sharing</h5>
+                                <button class="btn btn-primary-custom btn-sm">
+                                    <i class="fas fa-upload"></i> Upload File
+                                </button>
+                            </div>
+                            <div class="list-group">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-pdf text-danger fa-2x me-3"></i>
+                                        <strong>Proposal.pdf</strong>
+                                        <p class="mb-0 small text-muted">2.5 MB - Sarah</p>
+                                    </div>
+                                    <button class="btn btn-outline-custom btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tabTimeline" class="tab-pane fade">
+                            <h5 class="mb-4">Progress Timeline</h5>
+                            <div class="mb-3">
+                                <strong>21 Nov:</strong> Sarah menyelesaikan Riset Competitor
+                            </div>
+                            <div class="mb-3">
+                                <strong>20 Nov:</strong> Andi upload Database Design
+                            </div>
+                            <div class="mb-3">
+                                <strong>18 Nov:</strong> Proyek dimulai
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary-custom" onclick="finishProject()">
+                            <i class="fas fa-flag-checkered"></i> Tandai Proyek Selesai
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-custom" onclick="showDashboard()">
+                        <i class="fas fa-home"></i> Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feed Section -->
+        <div id="feed" class="content-section">
+            <div class="container mt-5">
+                <h2 class="brand-title mb-4"><i class="fas fa-rss"></i> Intercampus Feed</h2>
+
+                <div class="mb-4">
+                    <button class="btn btn-primary-custom" onclick="showCreatePost()">
+                        <i class="fas fa-plus"></i> Buat Postingan
+                    </button>
+                </div>
+
+                <div id="createPostForm" style="display: none;" class="card-custom p-4 mb-4">
+                    <h5>Buat Postingan Baru</h5>
+                    <hr>
+                    <div class="mb-3">
+                        <label class="form-label">Kategori</label>
+                        <select class="form-select" id="postCategory">
+                            <option>Tips Kuliah</option>
+                            <option>Info Lomba</option>
+                            <option>Pengalaman Organisasi</option>
+                            <option>Review Dosen/Matkul</option>
+                            <option>Diskusi</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Judul</label>
+                        <input type="text" class="form-control" id="postTitle">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Konten</label>
+                        <textarea class="form-control" rows="4" id="postContent"></textarea>
+                    </div>
+                    <button class="btn btn-primary-custom" onclick="submitPost()">
+                        <i class="fas fa-paper-plane"></i> Posting (AI Moderasi)
+                    </button>
+                    <button class="btn btn-outline-custom ms-2" onclick="cancelPost()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+
+                <div class="mb-3">
+                    <button class="filter-btn active" onclick="filterFeed('all')">Semua</button>
+                    <button class="filter-btn" onclick="filterFeed('tips')">Tips</button>
+                    <button class="filter-btn" onclick="filterFeed('lomba')">Lomba</button>
+                    <button class="filter-btn" onclick="filterFeed('organisasi')">Organisasi</button>
+                    <button class="filter-btn" onclick="filterFeed('review')">Review</button>
+                    <button class="filter-btn" onclick="filterFeed('diskusi')">Diskusi</button>
+                </div>
+
+                <div id="feedContainer">
+                    <div class="post-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="post-avatar">SN</div>
+                            <div>
+                                <strong>Siti Nurhaliza</strong>
+                                <p class="mb-0 text-muted small">Sistem Informasi - UGM</p>
+                                <small class="text-muted">2 jam lalu</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-primary mb-2">Info Lomba</span>
+                        <h5>Lomba UI/UX Design Nasional 2025</h5>
+                        <p>Halo! Ada lomba UI/UX design tingkat nasional dengan total hadiah 50 juta! Deadline 30 November. Good luck! 🎨</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-custom btn-sm" onclick="likePost(this)">
+                                <i class="far fa-heart"></i> 42
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="far fa-comment"></i> 15
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm" onclick="savePost(this)">
+                                <i class="far fa-bookmark"></i> Simpan
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="post-avatar">AP</div>
+                            <div>
+                                <strong>Andi Prasetyo</strong>
+                                <p class="mb-0 text-muted small">Teknik Informatika - ITB</p>
+                                <small class="text-muted">5 jam lalu</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-success mb-2">Tips Kuliah</span>
+                        <h5>Tips Efektif Belajar Algoritma</h5>
+                        <p>Setelah struggle di mata kuliah ini, tips yang membantu:</p>
+                        <ol>
+                            <li>Practice coding setiap hari</li>
+                            <li>Visualisasi algoritma pakai diagram</li>
+                            <li>Diskusi dengan teman</li>
+                            <li>Review code di GitHub</li>
+                        </ol>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-custom btn-sm" onclick="likePost(this)">
+                                <i class="far fa-heart"></i> 128
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="far fa-comment"></i> 34
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm" onclick="savePost(this)">
+                                <i class="far fa-bookmark"></i> Simpan
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="post-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="post-avatar">DS</div>
+                            <div>
+                                <strong>Dewi Sartika</strong>
+                                <p class="mb-0 text-muted small">Ilmu Komunikasi - Unpad</p>
+                                <small class="text-muted">1 hari lalu</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-info mb-2">Diskusi</span>
+                        <h5>Cara Balance Organisasi & Akademik?</h5>
+                        <p>Ada tips buat balance organisasi sama kuliah? Aktif di 2 organisasi tapi IPK turun. Butuh saran! 😭</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-custom btn-sm" onclick="likePost(this)">
+                                <i class="far fa-heart"></i> 89
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="far fa-comment"></i> 56
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                            <button class="btn btn-outline-custom btn-sm" onclick="savePost(this)">
+                                <i class="far fa-bookmark"></i> Simpan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-custom" onclick="showDashboard()">
+                        <i class="fas fa-home"></i> Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile" class="content-section">
+            <div class="container mt-5">
+                <h2 class="brand-title mb-4"><i class="fas fa-user"></i> Student Profile</h2>
+
+                <div class="card-custom p-4 mb-4">
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <img src="https://ui-avatars.com/api/?name=User&background=4a9eff&color=fff&size=150" class="rounded-circle mb-3" style="width: 150px; height: 150px; border: 4px solid var(--accent);" id="profileAvatar">
+                            <h4 id="profileName">-</h4>
+                            <p class="text-muted" id="profileUsername">@username</p>
+                            <span class="level-badge"><i class="fas fa-star"></i> Level <span id="profileLevel">1</span></span>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5>Informasi Akademik</h5>
+                                <button class="btn btn-primary-custom btn-sm" onclick="editProfile()">
+                                    <i class="fas fa-edit"></i> Edit Profil
+                                </button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <p><strong><i class="fas fa-university"></i> Universitas:</strong><br><span id="profileUniv">-</span></p>
+                                    <p><strong><i class="fas fa-book"></i> Program Studi:</strong><br><span id="profileMajor">-</span></p>
+                                    <p><strong><i class="fas fa-calendar"></i> Semester:</strong><br><span id="profileSem">-</span></p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <p><strong><i class="fas fa-id-card"></i> NIM:</strong><br><span id="profileNIM">-</span></p>
+                                    <p><strong><i class="fas fa-language"></i> Bahasa:</strong><br>Indonesia, Inggris</p>
+                                    <p><strong><i class="fas fa-envelope"></i> Email:</strong><br>student@university.ac.id</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 mb-4">
+                    <h5><i class="fas fa-trophy"></i> Badge Pencapaian</h5>
+                    <hr>
+                    <div class="text-center">
+                        <div class="achievement-badge">
+                            <i class="fas fa-fire"></i> Focus Master
+                            <p class="mb-0 small">100 jam fokus</p>
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-users"></i> Top Collaborator
+                            <p class="mb-0 small">10 proyek</p>
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-comment"></i> Active Contributor
+                            <p class="mb-0 small">50 postingan</p>
+                        </div>
+                        <div class="achievement-badge">
+                            <i class="fas fa-handshake"></i> Networking Pro
+                            <p class="mb-0 small">50+ koneksi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-tree">
+                    <h5 class="mb-4 text-center brand-title"><i class="fas fa-sitemap"></i> Skill Tree</h5>
+                    <div class="text-center">
+                        <div>
+                            <div class="skill-node" style="font-size: 1.2rem; padding: 15px 30px;">
+                                <i class="fas fa-code"></i> Full Stack Development
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="skill-node">
+                                <i class="fab fa-react"></i> React.js
+                            </div>
+                            <div class="skill-node">
+                                <i class="fab fa-node-js"></i> Node.js
+                            </div>
+                            <div class="skill-node">
+                                <i class="fas fa-database"></i> MongoDB
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="skill-node">
+                                <i class="fab fa-js"></i> JavaScript
+                            </div>
+                            <div class="skill-node">
+                                <i class="fab fa-python"></i> Python
+                            </div>
+                            <div class="skill-node">
+                                <i class="fas fa-palette"></i> UI/UX
+                            </div>
+                            <div class="skill-node">
+                                <i class="fab fa-git-alt"></i> Git
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 mt-4">
+                    <h5><i class="fas fa-briefcase"></i> Portofolio Mini</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card-custom p-3">
+                                <h6><i class="fas fa-laptop-code"></i> E-Learning Platform</h6>
+                                <p class="small text-muted mb-2">Web Development | 2024</p>
+                                <p class="small">Platform pembelajaran online dengan video streaming dan quiz interaktif</p>
+                                <span class="skill-badge">React</span>
+                                <span class="skill-badge">Firebase</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card-custom p-3">
+                                <h6><i class="fas fa-mobile-alt"></i> Health Tracker App</h6>
+                                <p class="small text-muted mb-2">Mobile Development | 2024</p>
+                                <p class="small">Tracking kesehatan dengan AI recommendation</p>
+                                <span class="skill-badge">Flutter</span>
+                                <span class="skill-badge">TensorFlow</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-custom btn-sm">
+                        <i class="fas fa-plus"></i> Tambah Portofolio
+                    </button>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-custom" onclick="showDashboard()">
+                        <i class="fas fa-home"></i> Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // State Management
+        let currentUser = {
+            name: '',
+            nim: '',
+            semester: '',
+            major: '',
+            university: '',
+            level: 1
+        };
+
+        let timerInterval;
+        let timeLeft = 1500; // 25 minutes in seconds
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+        });
+
+        // Profile Setup
+        function showProfileSetup() {
+            document.getElementById('welcomeScreen').classList.remove('active');
+            document.getElementById('profileSetup').classList.add('active');
+        }
+
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            currentUser.name = document.getElementById('userName').value;
+            currentUser.nim = document.getElementById('userNIM').value;
+            currentUser.semester = document.getElementById('userSemester').value;
+            currentUser.major = document.getElementById('userMajor').value;
+            currentUser.university = document.getElementById('userUniversity').value;
+
+            saveUserData();
+            showMainApp();
+        });
+
+        function showMainApp() {
+            document.getElementById('profileSetup').classList.remove('active');
+            document.getElementById('mainApp').classList.add('active');
+            updateProfileDisplay();
+        }
+
+        function updateProfileDisplay() {
+            document.getElementById('displayName').textContent = currentUser.name;
+            document.getElementById('userLevel').textContent = currentUser.level;
+            
+            // Update profile page
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileUsername').textContent = '@' + currentUser.nim;
+            document.getElementById('profileLevel').textContent = currentUser.level;
+            document.getElementById('profileUniv').textContent = currentUser.university;
+            document.getElementById('profileMajor').textContent = currentUser.major;
+            document.getElementById('profileSem').textContent = 'Semester ' + currentUser.semester;
+            document.getElementById('profileNIM').textContent = currentUser.nim;
+            
+            // Update avatar
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=4a9eff&color=fff&size=150`;
+            document.getElementById('profileAvatar').src = avatarUrl;
+        }
+
+        // Navigation
+        function showDashboard() {
+            hideAllContent();
+            document.getElementById('dashboard').classList.add('active');
+            updateNavActive('dashboard');
+        }
+
+        function showMatching() {
+            hideAllContent();
+            document.getElementById('matching').classList.add('active');
+            updateNavActive('matching');
+        }
+
+        function showStudyRoom() {
+            hideAllContent();
+            document.getElementById('studyroom').classList.add('active');
+            updateNavActive('studyroom');
+        }
+
+        function showProjects() {
+            hideAllContent();
+            document.getElementById('projects').classList.add('active');
+            updateNavActive('projects');
+        }
+
+        function showFeed() {
+            hideAllContent();
+            document.getElementById('feed').classList.add('active');
+            updateNavActive('feed');
+        }
+
+        function showProfile() {
+            hideAllContent();
+            document.getElementById('profile').classList.add('active');
+            updateNavActive('profile');
+        }
+
+        function hideAllContent() {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+        }
+
+        function updateNavActive(page) {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+        }
+
+        // Matching Functions
+        function findMatches() {
+            document.getElementById('matchResults').style.display = 'block';
+            showNotification('Mencari koneksi yang cocok...', 'info');
+            setTimeout(() => {
+                showNotification('Ditemukan 2 mahasiswa yang cocok!', 'success');
+            }, 1000);
+        }
+
+        function viewProfile(name) {
+            showNotification(`Membuka profil ${name}...`, 'info');
+        }
+
+        function sendMessage(name) {
+            showNotification(`Pesan terkirim ke ${name}!`, 'success');
+        }
+
+        function inviteToRoom(name) {
+            showNotification(`Undangan study room terkirim ke ${name}!`, 'success');
+        }
+
+        function findMore() {
+            showNotification('Mencari koneksi lainnya...', 'info');
+        }
+
+        // Study Room Functions
+        function selectRoomType(type) {
+            document.getElementById('roomSelection').style.display = 'none';
+            document.getElementById('modeSelection').style.display = 'block';
+            showNotification(`Tipe ruangan ${type} dipilih`, 'info');
+        }
+
+        function selectMode(mode) {
+            document.getElementById('modeSelection').style.display = 'none';
+            document.getElementById('activeStudyRoom').style.display = 'block';
+            
+            const roomName = mode === 'focus' ? 'Deep Focus Room' : 'Open Discussion Room';
+            document.getElementById('currentRoomName').textContent = roomName;
+            showNotification(`Bergabung ke ${roomName}`, 'success');
+        }
+
+        function startTimer() {
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showNotification('Sesi fokus selesai! 🎉', 'success');
+                    timeLeft = 1500;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
+            showNotification('Timer dijeda', 'info');
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 1500;
+            updateTimerDisplay();
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
+            showNotification('Timer direset', 'info');
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatBox = document.getElementById('chatBox');
+                const newMsg = document.createElement('p');
+                newMsg.className = 'small mb-2';
+                newMsg.innerHTML = `<strong>Kamu:</strong> ${message}`;
+                chatBox.appendChild(newMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                input.value = '';
+            }
+        }
+
+        function leaveStudyRoom() {
+            document.getElementById('activeStudyRoom').style.display = 'none';
+            document.getElementById('roomSelection').style.display = 'block';
+            document.getElementById('modeSelection').style.display = 'none';
+            resetTimer();
+            showNotification('Anda keluar dari ruangan', 'info');
+        }
+
+        function completeSession() {
+            currentUser.level++;
+            saveUserData();
+            updateProfileDisplay();
+            showNotification('Selamat! Anda mendapat badge "Focus Master" dan naik ke Level ' + currentUser.level + '! 🏆', 'success');
+            setTimeout(() => {
+                leaveStudyRoom();
+                showDashboard();
+            }, 2000);
+        }
+
+        // Project Functions
+        function showCreateProject() {
+            document.getElementById('createProjectForm').style.display = 'block';
+        }
+
+        function cancelCreateProject() {
+            document.getElementById('createProjectForm').style.display = 'none';
+        }
+
+        function createProject() {
+            const name = document.getElementById('projectName').value;
+            if (name) {
+                showNotification('Proyek berhasil dibuat! Sistem sedang mencari anggota yang cocok...', 'success');
+                setTimeout(() => {
+                    showNotification('Ditemukan 3 mahasiswa dengan skill yang sesuai!', 'info');
+                    cancelCreateProject();
+                }, 1500);
+            }
+        }
+
+        function showAvailableProjects() {
+            showNotification('Menampilkan proyek yang tersedia...', 'info');
+        }
+
+        function openProjectDashboard(projectName) {
+            document.getElementById('projectList').style.display = 'none';
+            document.getElementById('projectDashboard').style.display = 'block';
+            showNotification(`Membuka dashboard proyek ${projectName}`, 'info');
+        }
+
+        function closeProjectDashboard() {
+            document.getElementById('projectDashboard').style.display = 'none';
+            document.getElementById('projectList').style.display = 'block';
+        }
+
+        function joinProject(name) {
+            showNotification(`Bergabung ke proyek ${name}!`, 'success');
+        }
+
+        function addNewTask() {
+            showNotification('Form tambah task dibuka', 'info');
+        }
+
+        function completeTask(btn) {
+            const taskItem = btn.closest('.task-item');
+            taskItem.classList.add('completed');
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Selesai';
+            btn.disabled = true;
+            showNotification('Task ditandai selesai!', 'success');
+        }
+
+        function finishProject() {
+            currentUser.level += 2;
+            saveUserData();
+            updateProfileDisplay();
+            showNotification('Proyek selesai! Anda mendapat badge "Top Collaborator" dan naik 2 level! 🎉', 'success');
+            setTimeout(() => {
+                closeProjectDashboard();
+                showDashboard();
+            }, 2000);
+        }
+
+        // Feed Functions
+        function showCreatePost() {
+            document.getElementById('createPostForm').style.display = 'block';
+        }
+
+        function cancelPost() {
+            document.getElementById('createPostForm').style.display = 'none';
+        }
+
+        function submitPost() {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            
+            if (title && content) {
+                showNotification('AI sedang memoderasi konten...', 'info');
+                setTimeout(() => {
+                    showNotification('Postingan berhasil dipublikasikan!', 'success');
+                    cancelPost();
+                    document.getElementById('postTitle').value = '';
+                    document.getElementById('postContent').value = '';
+                }, 1500);
+            }
+        }
+
+        function filterFeed(category) {
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            showNotification(`Filter: ${category}`, 'info');
+        }
+
+        function likePost(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#ff4458';
+                const count = parseInt(btn.textContent.trim());
+                btn.innerHTML = `<i class="fas fa-heart" style="color: #ff4458;"></i> ${count + 1}`;
+            }
+        }
+
+        function savePost(btn) {
+            const icon = btn.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                showNotification('Postingan disimpan ke koleksi', 'success');
+            }
+        }
+
+        // Profile Functions
+        function editProfile() {
+            showNotification('Form edit profil dibuka', 'info');
+        }
+
+        // Storage Functions
+        function saveUserData() {
+            localStorage.setItem('uniconnect_user', JSON.stringify(currentUser));
+        }
+
+        function loadUserData() {
+            const saved = localStorage.getItem('uniconnect_user');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                document.getElementById('welcomeScreen').classList.remove('active');
+                document.getElementById('mainApp').classList.add('active');
+                updateProfileDisplay();
+            }
+        }
+
+        // Notification Function
+        function showNotification(message, type) {
+            const colors = {
+                success: '#28a745',
+                info: '#17a2b8',
+                warning: '#ffc107',
+                error: '#dc3545'
+            };
+
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: ${colors[type] || colors.info};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
